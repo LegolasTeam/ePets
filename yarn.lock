@@ -4725,6 +4725,10 @@ react-native-linear-gradient@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.0.0.tgz#7442c00e1fcd9fca329119dcbaf744d12bcd1b5a"
 
+react-native-maps@^0.16.4:
+  version "0.16.4"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.16.4.tgz#c18c3cab8cd0ce05431cd74dac11a39afaa579e4"
+
 react-native-navigation-experimental-compat@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-navigation-experimental-compat/-/react-native-navigation-experimental-compat-1.0.0.tgz#2b00903a3d305b1234eec289550a83e1f2eae627"

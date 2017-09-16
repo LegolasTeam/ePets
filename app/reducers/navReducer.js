@@ -1,7 +1,7 @@
 import AppNavigator from "../configNav";
 
 const initialState = AppNavigator.router.getStateForAction(
-  AppNavigator.router.getActionForPathAndParams("Login")
+  AppNavigator.router.getActionForPathAndParams("Feeds")
 );
 
 const navReducer = (state = initialState, action) => {
