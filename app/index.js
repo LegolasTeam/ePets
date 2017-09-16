@@ -10,6 +10,8 @@ import appReducer from "./reducers";
 // Navigation
 import StackNav from "./configNav";
 
+import { bootstrap } from "./utils/bootstrap";
+
 class AppNavigator extends Component {
   render() {
     return (
