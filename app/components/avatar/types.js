@@ -1,9 +1,9 @@
-export const AvatarTypes = (theme) => {
-  return ({
+export default (AvatarTypes = theme => {
+  return {
     _base: {
       container: {
-        alignItems: 'center',
-        flexDirection: 'row',
+        alignItems: "center",
+        flexDirection: "row"
       },
       image: {
         width: 40,
@@ -13,15 +13,15 @@ export const AvatarTypes = (theme) => {
         width: 15,
         height: 15,
         borderRadius: 7.5,
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
+        alignItems: "center",
+        justifyContent: "center",
+        position: "absolute",
         bottom: -2,
         right: -2
       },
       badgeText: {
-        backgroundColor: 'transparent',
-        fontSize: 9,
+        backgroundColor: "transparent",
+        fontSize: 9
       }
     },
     big: {
@@ -32,20 +32,20 @@ export const AvatarTypes = (theme) => {
         marginBottom: 19
       },
       container: {
-        flexDirection: 'column'
+        flexDirection: "column"
       }
     },
     small: {
       image: {
         width: 32,
         height: 32,
-        borderRadius:16
+        borderRadius: 16
       }
     },
     circle: {
       image: {
         borderRadius: 20
-      },
+      }
     }
-  })
-};
+  };
+});

@@ -1,3 +1,4 @@
+import firebase from "firebase";
 var config = {
   apiKey: "AIzaSyBy6GRpm7eCFYOGqrT_KuylJhtyWHOcooE",
   authDomain: "epets-83015.firebaseapp.com",

@@ -12,6 +12,8 @@ import StackNav from "./configNav";
 
 import { bootstrap } from "./utils/bootstrap";
 
+bootstrap();
+
 class AppNavigator extends Component {
   render() {
     return (

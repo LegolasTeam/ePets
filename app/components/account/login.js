@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, Image, Keyboard } from "react-native";
 
-import firebase from "../../libs/firebaseConfig";
+import firebase from "../../utils/firebase";
 
 import {
   RkButton,
@@ -14,8 +14,8 @@ import {
   RkTheme
 } from "react-native-ui-kitten";
 
-import GradientButton from "../gradientButton/";
-import { Button } from "react-native-elements";
+import { GradientButton } from "../gradientButton/index";
+// import { Button } from "react-native-elements";
 import { scale, scaleModerate, scaleVertical } from "../../utils/utils";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -45,16 +45,17 @@ export default class Login extends Component {
     });
   }
 
-  login() {
-    firebase;
-  }
+  login() {}
 
   render() {
     let renderIcon = () => {
       return (
         <Image
           style={styles.image}
-          source={require("../../assets/images/logo.png")}
+          source={{
+            uri:
+              "https://i.pinimg.com/originals/a2/35/c2/a235c26c1e076e666262b186a0554a80.png"
+          }}
           style={{ width: 120, height: 120 }}
         />
       );
@@ -77,7 +78,7 @@ export default class Login extends Component {
         <View style={styles.header}>
           {renderIcon()}
           {/*<RkText rkType='light h1'>React Native</RkText>*/}
-          <RkText rkType="logo h0">FitChallenge</RkText>
+          <RkText rkType="logo h0">ePets</RkText>
         </View>
         <View style={styles.content}>
           <View>
@@ -98,13 +99,6 @@ export default class Login extends Component {
               text="LOGIN"
               onPress={() => this.login()}
             />
-            {/* <Button
-                large={true}
-                buttonStyle={{marginBottom: 15,borderRadius: 30}}
-                backgroundColor={"#FF5721"}
-                title="LOGIN"
-                onPress={() => this.login()}
-              /> */}
           </View>
 
           <View style={styles.buttons}>
