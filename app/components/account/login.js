@@ -67,14 +67,6 @@ export default class Login extends Component {
         onStartShouldSetResponder={e => true}
         onResponderRelease={e => Keyboard.dismiss()}
       >
-        <RkButton
-          style={[styles.button, { position: "absolute", margin: 10 }]}
-          rkType="social"
-          onPress={() => this.props.navigation.goBack()}
-        >
-          <Icon name="chevron-left" size={20} color="black" />
-        </RkButton>
-
         <View style={styles.header}>
           {renderIcon()}
           {/*<RkText rkType='light h1'>React Native</RkText>*/}

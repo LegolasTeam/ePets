@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, StatusBar } from "react-native";
 import { createStore } from "redux";
 import { Provider, connect } from "react-redux";
 import { addNavigationHelpers } from "react-navigation";
@@ -17,12 +17,15 @@ bootstrap();
 class AppNavigator extends Component {
   render() {
     return (
-      <StackNav
-        navigation={addNavigationHelpers({
-          dispatch: this.props.dispatch,
-          state: this.props.navReducer
-        })}
-      />
+      <View style={{ flex: 1 }}>
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
+        <StackNav
+          navigation={addNavigationHelpers({
+            dispatch: this.props.dispatch,
+            state: this.props.navReducer
+          })}
+        />
+      </View>
     );
   }
 }

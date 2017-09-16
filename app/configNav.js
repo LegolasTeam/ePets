@@ -1,15 +1,15 @@
 import { StackNavigator } from "react-navigation";
 
 // Screens
-import Home from "./components/index";
 import Login from "./components/account/login";
+import Signup from "./components/account/signup";
 
 const StackNav = StackNavigator({
   Login: {
     screen: Login
   },
-  Home: {
-    screen: Home
+  Signup: {
+    screen: Signup
   }
 });
 
