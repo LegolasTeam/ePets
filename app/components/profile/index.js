@@ -15,57 +15,83 @@ import { sliderWidth, itemWidth } from "./styles/SliderEntry.style";
 import styles1, { colors } from "./styles/index.style";
 import Header from "./Header";
 import Timeline from "./Timeline";
+import firebase from "../../utils/firebase";
+import moment from 'moment';
+import ActionButton from 'react-native-action-button';
+import Icon from "react-native-vector-icons/FontAwesome";
+
 
 const Screen = {
   height: Dimensions.get("window").height - 75
 };
 
-const ENTRIES1 = [
-  {
-    title: "Beautiful and dramatic Antelope Canyon",
-    subtitle: "Lorem ipsum dolor sit amet et nuncat mergitur",
-    illustration: "http://i.imgur.com/UYiroysl.jpg"
-  },
-  {
-    title: "Earlier this morning, NYC",
-    subtitle: "Lorem ipsum dolor sit amet",
-    illustration: "http://i.imgur.com/UPrs1EWl.jpg"
-  },
-  {
-    title: "White Pocket Sunset",
-    subtitle: "Lorem ipsum dolor sit amet et nuncat ",
-    illustration: "http://i.imgur.com/MABUbpDl.jpg"
-  },
-  {
-    title: "Acrocorinth, Greece",
-    subtitle: "Lorem ipsum dolor sit amet et nuncat mergitur",
-    illustration: "http://i.imgur.com/KZsmUi2l.jpg"
-  },
-  {
-    title: "The lone tree, majestic landscape of New Zealand",
-    subtitle: "Lorem ipsum dolor sit amet",
-    illustration: "http://i.imgur.com/2nCt3Sbl.jpg"
-  },
-  {
-    title: "Middle Earth, Germany",
-    subtitle: "Lorem ipsum dolor sit amet",
-    illustration: "http://i.imgur.com/lceHsT6l.jpg"
-  }
-];
+// const ENTRIES1 = [
+//   {
+//     title: "Beautiful and dramatic Antelope Canyon",
+//     subtitle: "Lorem ipsum dolor sit amet et nuncat mergitur",
+//     illustration: "http://i.imgur.com/UYiroysl.jpg"
+//   },
+//   {
+//     title: "Earlier this morning, NYC",
+//     subtitle: "Lorem ipsum dolor sit amet",
+//     illustration: "http://i.imgur.com/UPrs1EWl.jpg"
+//   },
+//   {
+//     title: "White Pocket Sunset",
+//     subtitle: "Lorem ipsum dolor sit amet et nuncat ",
+//     illustration: "http://i.imgur.com/MABUbpDl.jpg"
+//   },
+//   {
+//     title: "Acrocorinth, Greece",
+//     subtitle: "Lorem ipsum dolor sit amet et nuncat mergitur",
+//     illustration: "http://i.imgur.com/KZsmUi2l.jpg"
+//   },
+//   {
+//     title: "The lone tree, majestic landscape of New Zealand",
+//     subtitle: "Lorem ipsum dolor sit amet",
+//     illustration: "http://i.imgur.com/2nCt3Sbl.jpg"
+//   },
+//   {
+//     title: "Middle Earth, Germany",
+//     subtitle: "Lorem ipsum dolor sit amet",
+//     illustration: "http://i.imgur.com/lceHsT6l.jpg"
+//   }
+// ];
 
 const HEADER_MAX_HEIGHT = 300;
 const HEADER_MIN_HEIGHT = Platform.OS === "ios" ? 60 : 73;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
-const SLIDER_1_FIRST_ITEM = 1;
+const SLIDER_1_FIRST_ITEM = 0;
 
 class Profile extends Component {
   constructor(props) {
     super(props);
+    this.items =[
+      {
+        title: "The lone tree, majestic landscape of New Zealand",
+        subtitle: "Lorem ipsum dolor sit amet",
+        illustration: "http://i.imgur.com/2nCt3Sbl.jpg"
+      },
+      {
+        title: "Middle Earth, Germany",
+        subtitle: "Lorem ipsum dolor sit amet",
+        illustration: "http://i.imgur.com/lceHsT6l.jpg"
+      }
+    ];
+    firebase.database().ref("Users").child("rocky_dog").child("posts").on("child_added", (data) => {
+      let temp ={
+        title: data.val().caption,
+        subtitle: moment.unix(data.val().date).fromNow(),
+        illustration: data.val().url
+      }
+      this.items.push(temp)
+        //console.log(items)
+    })
     this.state = {
       slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
       slider1Ref: null,
-      scrollY: new Animated.Value(0)
+      scrollY: new Animated.Value(0),
     };
     this._deltaY = new Animated.Value(0);
   }
@@ -98,7 +124,7 @@ class Profile extends Component {
               this.setState({ slider1Ref: c });
             }
           }}
-          data={ENTRIES1}
+          data={this.items}
           renderItem={this._renderItemWithParallax}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
@@ -204,6 +230,9 @@ class Profile extends Component {
         >
           <Header />
         </Animated.View>
+        <ActionButton buttonColor="rgba(0,0,0,0.5)" onPress={()=>{this.props.navigation.navigate('Post')}}>
+            
+        </ActionButton>
       </View>
     );
   }
@@ -260,7 +289,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#D3D3D3",
     alignItems: "center",
     justifyContent: "center"
-  }
+  },
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
 });
 
 export default Profile;

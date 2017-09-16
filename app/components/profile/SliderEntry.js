@@ -38,7 +38,7 @@ export default class SliderEntry extends Component {
   }
 
   render() {
-    const { data: { title, subtitle }, even } = this.props;
+    const { data: { title,subtitle}, even } = this.props;
 
     const uppercaseTitle = title ? (
       <Text
