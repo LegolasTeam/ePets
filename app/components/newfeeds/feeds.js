@@ -28,17 +28,11 @@ export default class Feeds extends React.Component {
         var d = [];
         if (data.val() != null) {
           var a = data.val();
-<<<<<<< HEAD
           for (var key in a){
             if(a[key].posts!==null)
               var b = a[key].posts;
             for(var k in b){
-=======
-          for (var key in a) {
-            if (a[key].posts !== null) var b = a[key].posts;
-            for (var k in b) {
-              console.log(k);
->>>>>>> 6a935cad2d024ded818f1386ca067456a03bd85f
+
               let post = {
                 id: k,
                 root: key,
