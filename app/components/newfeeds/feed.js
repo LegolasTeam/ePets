@@ -48,7 +48,7 @@ export default class Feed extends React.Component {
             </View>
           </View>
           <View rkCardFooter>
-            <SocialBar navigation={this.props.navigation} cmts={this.data.item.post.comments}/>
+            <SocialBar navigation={this.props.navigation} id={{root: this.data.item.root,id : this.data.item.id}}/>
           </View>
         </RkCard>
       </ScrollView>

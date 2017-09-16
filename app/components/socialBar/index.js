@@ -49,7 +49,7 @@ export class SocialBar extends RkComponent {
     };
 
     let updateComments = () => {
-      this.props.navigation.navigate('Comments',{comments: this.props.cmts})
+      this.props.navigation.navigate('Comments',{ id: this.props.id})
     };
 
     let updateShares = () => {

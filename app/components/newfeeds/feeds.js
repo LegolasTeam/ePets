@@ -28,12 +28,14 @@ export default class Feeds extends React.Component {
         var d = [];
         if (data.val() != null) {
           var a = data.val();
-          for (var key in a) {
-            if (a[key].posts !== null) var b = a[key].posts;
-            for (var k in b) {
-              console.log(k);
+          for (var key in a){
+            if(a[key].posts!==null)
+              var b = a[key].posts;
+            for(var k in b){
+
               let post = {
                 id: k,
+                root: key,
                 user: {
                   name: a[key].username,
                   ava: a[key].profilepic,
@@ -74,12 +76,10 @@ export default class Feeds extends React.Component {
             </RkText>
             <RkText rkType="secondary2 inverseColor">5 minutes</RkText>
             <View rkCardFooter style={styles.footer}>
-              <SocialBar
-                rkType="leftAligned"
-                navigation={this.props.navigation}
-                cmts={info.item.post.comments}
-              />
-            </View>
+
+              <SocialBar rkType='leftAligned' navigation={this.props.navigation} id={{root: info.item.root,id :info.item.id}}/>
+            </View >
+
           </View>
         </RkCard>
       </TouchableOpacity>
