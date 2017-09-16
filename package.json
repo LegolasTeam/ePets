@@ -10,7 +10,7 @@
 		"@shoutem/ui": "^0.21.3",
 		"firebase": "^4.3.1",
 		"react": "16.0.0-alpha.12",
-		"react-native": "0.47.0",
+		"react-native": "0.47.1",
 		"react-native-animatable": "^1.2.3",
 		"react-native-linear-gradient": "^2.3.0",
 		"react-native-maps": "^0.16.4",
