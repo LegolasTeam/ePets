@@ -1,10 +1,10 @@
-import {scale, scaleModerate, scaleVertical} from '../../libs/utils';
+import { scale, scaleModerate, scaleVertical } from "../../utils/utils";
 
-export const GradientButtonTypes = (theme) => {
-  return ({
+export const GradientButtonTypes = theme => {
+  return {
     _base: {
       button: {
-        alignItems: 'stretch',
+        alignItems: "stretch",
         paddingVertical: 0,
         paddingHorizontal: 0,
         height: scaleVertical(40),
@@ -12,21 +12,21 @@ export const GradientButtonTypes = (theme) => {
       },
       gradient: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
         borderRadius: 20,
         colors: theme.colors.gradients.base
       },
       text: {
-        backgroundColor: 'transparent',
+        backgroundColor: "transparent",
         color: theme.colors.text.inverse
       }
     },
     large: {
       button: {
-        alignSelf: 'stretch',
+        alignSelf: "stretch",
         height: scaleVertical(56),
-        borderRadius: 28,
+        borderRadius: 28
       },
       gradient: {
         borderRadius: 28
@@ -38,13 +38,13 @@ export const GradientButtonTypes = (theme) => {
         borderRadius: 5,
         marginHorizontal: 10,
         height: null,
-        alignSelf: 'auto',
+        alignSelf: "auto"
       },
       gradient: {
         flex: 1,
         borderRadius: 5,
-        padding: 10,
+        padding: 10
       }
     }
-  })
+  };
 };
