@@ -1,5 +1,6 @@
+import React, { Component } from "react";
 import { StackNavigator, TabNavigator } from "react-navigation";
-
+import Icon from "react-native-vector-icons/Ionicons";
 // Screens
 import Login from "./components/account/login";
 import Signup from "./components/account/signup";
@@ -35,16 +36,35 @@ const stackProfile = StackNavigator({
 const Tabview = TabNavigator(
   {
     Newsfeed: {
-      screen: StackFeeds
+      screen: StackFeeds,
+      navigationOptions: {
+        tabBarIcon: <Icon name="md-paw" color="gray" size={25} />
+      }
     },
     Profile: {
-      screen: stackProfile
+      screen: stackProfile,
+      navigationOptions: {
+        tabBarIcon: <Icon name="ios-home" color="gray" size={25} />
+      }
     },
     Map: {
-      screen: Map
+      screen: Map,
+      navigationOptions: {
+        tabBarIcon: <Icon name="md-pin" color="gray" size={25} />
+      }
     }
   },
   {
+    tabBarOptions: {
+      style: {
+        backgroundColor: "white"
+      },
+      indicatorStyle: {
+        backgroundColor: "white"
+      },
+      showIcon: true,
+      showLabel: false
+    },
     tabBarPosition: "bottom",
     animationEnabled: true
   }
