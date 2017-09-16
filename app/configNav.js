@@ -6,8 +6,9 @@ import Signup from "./components/account/signup";
 
 import Feed from "./components/newfeeds/feed";
 import Feeds from "./components/newfeeds/feeds";
-import Comments from './components/comments'
+import Comments from "./components/comments";
 import Profile from "./components/profile";
+import Map from "./components/map";
 
 const StackFeeds = StackNavigator({
   Feeds: {
@@ -19,8 +20,7 @@ const StackFeeds = StackNavigator({
   Comments: {
     screen: Comments
   }
-
-})
+});
 
 const Tabview = TabNavigator(
   {
@@ -29,14 +29,16 @@ const Tabview = TabNavigator(
     },
     Profile: {
       screen: Profile
+    },
+    Map: {
+      screen: Map
     }
   },
   {
-    tabBarPosition: "top",
+    tabBarPosition: "bottom",
     animationEnabled: true
   }
 );
-
 
 const StackNav = StackNavigator({
   Login: {
