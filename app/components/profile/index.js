@@ -16,10 +16,9 @@ import styles1, { colors } from "./styles/index.style";
 import Header from "./Header";
 import Timeline from "./Timeline";
 import firebase from "../../utils/firebase";
-import moment from 'moment';
-import ActionButton from 'react-native-action-button';
+import moment from "moment";
+import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/FontAwesome";
-
 
 const Screen = {
   height: Dimensions.get("window").height - 75
@@ -65,33 +64,41 @@ const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 const SLIDER_1_FIRST_ITEM = 0;
 
 class Profile extends Component {
+  static navigationOptions = {
+    title: "Profile"
+  };
   constructor(props) {
     super(props);
-    this.items =[
+    this.items = [
       {
-        title: "The lone tree, majestic landscape of New Zealand",
-        subtitle: "Lorem ipsum dolor sit amet",
-        illustration: "http://i.imgur.com/2nCt3Sbl.jpg"
+        title: "",
+        subtitle: "",
+        illustration: "https://i.imgur.com/DOIMvNf.jpg"
       },
       {
-        title: "Middle Earth, Germany",
-        subtitle: "Lorem ipsum dolor sit amet",
-        illustration: "http://i.imgur.com/lceHsT6l.jpg"
+        title: "",
+        subtitle: "",
+        illustration: "https://i.imgur.com/m0F8DzG.png"
       }
     ];
-    firebase.database().ref("Users").child("rocky_dog").child("posts").on("child_added", (data) => {
-      let temp ={
-        title: data.val().caption,
-        subtitle: moment.unix(data.val().date).fromNow(),
-        illustration: data.val().url
-      }
-      this.items.push(temp)
+    firebase
+      .database()
+      .ref("Users")
+      .child("rocky_dog")
+      .child("posts")
+      .on("child_added", data => {
+        let temp = {
+          title: data.val().caption,
+          subtitle: moment.unix(data.val().date).fromNow(),
+          illustration: data.val().url
+        };
+        this.items.push(temp);
         //console.log(items)
-    })
+      });
     this.state = {
       slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
       slider1Ref: null,
-      scrollY: new Animated.Value(0),
+      scrollY: new Animated.Value(0)
     };
     this._deltaY = new Animated.Value(0);
   }
@@ -117,7 +124,6 @@ class Profile extends Component {
         <Text style={[styles1.subtitle, { fontSize: 25, color: "black" }]}>
           I love my dog
         </Text>
-        {/* TODO: profileinfo */}
         <Carousel
           ref={c => {
             if (!this.state.slider1Ref) {
@@ -148,7 +154,7 @@ class Profile extends Component {
     return (
       <ScrollView style={styles.scrollViewContent}>
         {this.slideShow()}
-        <Timeline />
+        <Timeline navigation={this.props.navigation} />
       </ScrollView>
     );
   }
@@ -216,7 +222,7 @@ class Profile extends Component {
             ]}
             source={{
               uri:
-                "https://www.petfinder.com/wp-content/uploads/2012/11/253x190-e1352928841572.jpg"
+                "https://firebasestorage.googleapis.com/v0/b/epets-80b54.appspot.com/o/ProfilePictures%2Fhusky_dog%2Fpics%2Frocky_dog.PNG?alt=media&token=4910e27c-944d-469a-ad9e-f03cebe6cb00"
             }}
           />
         </Animated.View>
@@ -230,9 +236,12 @@ class Profile extends Component {
         >
           <Header />
         </Animated.View>
-        <ActionButton buttonColor="rgba(0,0,0,0.5)" onPress={()=>{this.props.navigation.navigate('Post')}}>
-            
-        </ActionButton>
+        <ActionButton
+          buttonColor="rgba(0,0,0,0.5)"
+          onPress={() => {
+            this.props.navigation.navigate("Post");
+          }}
+        />
       </View>
     );
   }
@@ -293,8 +302,8 @@ const styles = StyleSheet.create({
   actionButtonIcon: {
     fontSize: 20,
     height: 22,
-    color: 'white',
-  },
+    color: "white"
+  }
 });
 
 export default Profile;

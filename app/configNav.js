@@ -31,7 +31,10 @@ const stackProfile = StackNavigator({
   Post: {
     screen: Post
   },
-})
+  Feed: {
+    screen: Feed
+  }
+});
 
 const Tabview = TabNavigator(
   {
@@ -69,7 +72,6 @@ const Tabview = TabNavigator(
     animationEnabled: true
   }
 );
-
 
 const StackNav = StackNavigator({
   Login: {

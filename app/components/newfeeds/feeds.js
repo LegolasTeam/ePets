@@ -1,5 +1,11 @@
 import React from "react";
-import { FlatList, Image, View, TouchableOpacity } from "react-native";
+import {
+  FlatList,
+  Image,
+  View,
+  TouchableOpacity,
+  ActivityIndicator
+} from "react-native";
 import { RkText, RkCard, RkStyleSheet } from "react-native-ui-kitten";
 import { SocialBar } from "../socialBar";
 import firebase from "../../utils/firebase";
@@ -96,12 +102,22 @@ export default class Feeds extends React.Component {
     let info = {};
     info.item = this.state.data[0];
     return (
-      <FlatList
-        data={this.state.data}
-        renderItem={this.renderItem}
-        keyExtractor={this._keyExtractor}
-        style={styles.root}
-      />
+      <View style={{ flex: 1 }}>
+        {this.state.data.length == 0 ? (
+          <ActivityIndicator
+            size={150}
+            color={"#ef5350"}
+            style={{ marginTop: 200 }}
+          />
+        ) : (
+          <FlatList
+            data={this.state.data}
+            renderItem={this.renderItem}
+            keyExtractor={this._keyExtractor}
+            style={styles.root}
+          />
+        )}
+      </View>
     );
   }
 }

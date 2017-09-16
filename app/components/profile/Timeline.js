@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import Timeline from "react-native-timeline-listview";
 import firebase from "../../utils/firebase";
-import moment from 'moment';
+import moment from "moment";
 
 class Timelines extends Component {
   constructor() {
     super();
-    this.data =[];
-    
+    this.data = [];
+
     // this.data = [
     //   {
     //     time: "08.01.1996",
@@ -51,27 +51,46 @@ class Timelines extends Component {
     //       "https://cloud.githubusercontent.com/assets/21040043/24240422/20d84f6c-0fe4-11e7-8f1d-9dbc594d0cfa.jpg"
     //   }
     // ];
-    this.state = { 
+    this.state = {
       selected: null,
       data: []
     };
   }
 
-  componentWillMount(){
-    firebase.database().ref("Users").child("rocky_dog").child("posts").on("child_added", (data) => {
-      let t ={
-        time: moment.unix(data.val().date).fromNow(),
-        description: data.val().caption,
-        imageUrl: data.val().url
-      }
-      this.data.push(t);
-    })
+  componentWillMount() {
+    firebase
+      .database()
+      .ref("Users")
+      .child("rocky_dog")
+      .child("posts")
+      .on("child_added", data => {
+        let t = {
+          id: data.key,
+          time: moment.unix(data.val().date).fromNow(),
+          description: data.val().caption,
+          imageUrl: data.val().url
+        };
+        this.data.push(t);
+      });
     this.setState({
-      data: this.data
-    })
+      data: this.data.reverse()
+    });
   }
   onEventPress = data => {
-    alert(JSON.stringify(data));
+    this.props.navigation.navigate("Feed", {
+      info: {
+        item: {
+          root: "rocky_dog",
+          id: data.id,
+          post: { caption: data.description, url: data.imageUrl },
+          user: {
+            ava:
+              "https://firebasestorage.googleapis.com/v0/b/epets-80b54.appspot.com/o/ProfilePictures%2Fhusky_dog%2Fpics%2Frocky_dog.PNG?alt=media&token=4910e27c-944d-469a-ad9e-f03cebe6cb00",
+            name: "Rocky"
+          }
+        }
+      }
+    });
   };
 
   renderDetail(rowData, sectionID, rowID) {
@@ -90,32 +109,35 @@ class Timelines extends Component {
 
   render() {
     return (
-      <View style={styles.container}>{
-        this.state.data.length == 0 ? <Text>loading...</Text> :
-        <Timeline
-          style={styles.list}
-          data={this.state.data}
-          circleSize={20}
-          circleColor="rgba(0,0,0,0)"
-          lineColor="rgb(45,156,219)"
-          timeContainerStyle={{ minWidth: 52, marginTop: 5 }}
-          timeStyle={{
-            textAlign: "center",
-            backgroundColor: "#ff9797",
-            color: "white",
-            padding: 5,
-            borderRadius: 13
-          }}
-          options={{ style: { paddingTop: 5 } } // descriptionStyle={{ color: "gray" }}
-          }
-          innerCircle={"dot"}
-          circleColor={"#ff0000"}
-          separator={false}
-          onEventPress={this.onEventPress}
-          renderDetail={(rowData, sectionID, rowID) =>
-            this.renderDetail(rowData, sectionID, rowID)}
-          columnFormat="two-column"
-        />}
+      <View style={styles.container}>
+        {this.state.data.length == 0 ? (
+          <Text>loading...</Text>
+        ) : (
+          <Timeline
+            style={styles.list}
+            data={this.state.data}
+            circleSize={20}
+            circleColor="rgba(0,0,0,0)"
+            lineColor="rgb(45,156,219)"
+            timeContainerStyle={{ minWidth: 52, marginTop: 5 }}
+            timeStyle={{
+              textAlign: "center",
+              backgroundColor: "#ff9797",
+              color: "white",
+              padding: 5,
+              borderRadius: 13
+            }}
+            options={{ style: { paddingTop: 5 } } // descriptionStyle={{ color: "gray" }}
+            }
+            innerCircle={"dot"}
+            circleColor={"#ff0000"}
+            separator={false}
+            onEventPress={this.onEventPress}
+            renderDetail={(rowData, sectionID, rowID) =>
+              this.renderDetail(rowData, sectionID, rowID)}
+            columnFormat="two-column"
+          />
+        )}
       </View>
     );
   }

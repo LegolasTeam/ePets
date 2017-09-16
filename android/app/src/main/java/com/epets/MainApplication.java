@@ -37,7 +37,6 @@ public class MainApplication extends Application implements ReactApplication {
             new RNFetchBlobPackage(),
               new RNSharePackage(),
               new PhotoViewPackage(),
-            new LinearGradientPackage(),
             new VectorIconsPackage()
       );
     }

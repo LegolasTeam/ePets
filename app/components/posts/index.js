@@ -1,123 +1,190 @@
 //import liraries
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    Platform,
-    Image,
-    ActivityIndicator
-  } from 'react-native'
-import ImagePicker from 'react-native-image-picker';
-import RNFetchBlob from 'react-native-fetch-blob';
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+  Image,
+  ActivityIndicator
+} from "react-native";
+import {
+  RkButton,
+  RkText,
+  RkTextInput,
+  RkAvoidKeyboard,
+  RkStyleSheet,
+  RkTheme
+} from "react-native-ui-kitten";
+import Icon from "react-native-vector-icons/FontAwesome";
+import ImagePicker from "react-native-image-picker";
+import RNFetchBlob from "react-native-fetch-blob";
 import firebase from "../../utils/firebase";
 
-const storage = firebase.storage()
+const storage = firebase.storage();
 
-const Blob = RNFetchBlob.polyfill.Blob
-window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
-window.Blob = Blob
+const Blob = RNFetchBlob.polyfill.Blob;
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+window.Blob = Blob;
 
-const uploadImage = (uri, mime = 'application/octet-stream') => {
-    return new Promise((resolve, reject) => {
-      const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
-        const sessionId = new Date().getTime()
-        let uploadBlob = null
-        const imageRef = storage.ref('images').child(`${sessionId}`)
-  
-        fs.readFile(uploadUri, 'base64')
-        .then((data) => {
-          return Blob.build(data, { type: `${mime};BASE64` })
-        })
-        .then((blob) => {
-          uploadBlob = blob
-          return imageRef.put(blob, { contentType: mime })
-        })
-        .then(() => {
-          uploadBlob.close()
-          return imageRef.getDownloadURL()
-        })
-        .then((url) => {
-          resolve(url)
-        })
-        .catch((error) => {
-          reject(error)
-        })
-    })
-  }
 class Demo extends Component {
-    static navigationOptions = {
-        title: 'Post'.toUpperCase()
-      };
+  static navigationOptions = {
+    title: "Post".toUpperCase()
+  };
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.state = {}
+    this.state = {
+      message: ""
+    };
   }
 
   _pickImage() {
-    this.setState({ uploadURL: '' })
+    this.setState({ uploadURL: "" });
 
-    ImagePicker.launchImageLibrary({}, response  => {
-      uploadImage(response.uri)
-        .then(url => this.setState({ uploadURL: url }))
-        .catch(error => console.log(error))
-    })
+    ImagePicker.launchImageLibrary({}, response => {
+      this.setState({ uploadURL: response.uri });
+    });
+  }
+
+  _pushMessage() {
+    firebase
+      .database()
+      .ref("Users")
+      .child("rocky_dog")
+      .child("posts")
+      .push({
+        caption: this.state.message,
+        date: Date.now() / 1000,
+        like: 0,
+        url: "https://www.eandl.co.uk/2015/images/pet-banner-dog.jpg"
+      });
+    this.props.navigation.goBack();
   }
 
   render() {
     return (
-      <View style={ styles.container }>
-        {
-          (() => {
-            switch (this.state.uploadURL) {
-              case null:
-                return null
-              case '':
-                return <ActivityIndicator />
-              default:
-                return (
-                  <View>
-                    <Image
-                      source={{ uri: this.state.uploadURL }}
-                      style={ styles.image }
+      <View style={styles.container}>
+        {(() => {
+          switch (this.state.uploadURL) {
+            case null:
+              return null;
+            case "":
+              return <ActivityIndicator />;
+            default:
+              return (
+                <View>
+                  {/* <Text>{this.state.uploadURL}</Text> */}
+                  <View style={styles.footer}>
+                    <RkButton
+                      style={styles.plus}
+                      rkType="clear"
+                      onPress={() => this._pickImage()}
+                    >
+                      <RkText rkType="awesome secondaryColor">
+                        {" "}
+                        <Icon name="plus" size={30} />
+                      </RkText>
+                    </RkButton>
+
+                    <RkTextInput
+                      onChangeText={message =>
+                        this.setState(
+                          //onBlur={() => this._scroll(true)} // onFocus={() => this._scroll(true)}
+                          { message }
+                        )}
+                      value={
+                        this.state.message //  ref = 'txtInput'
+                      }
+                      rkType="row sticker"
+                      placeholder="Add a caption..."
                     />
-                    <Text>{ this.state.uploadURL }</Text>
+
+                    <RkButton
+                      onPress={() => this._pushMessage()}
+                      style={styles.send}
+                      rkType="circle highlight"
+                    >
+                      <Image
+                        source={require("../../assets/icons/sendIcon.png")}
+                      />
+                    </RkButton>
                   </View>
-                )
-            }
-          })()
-        }
-        <TouchableOpacity onPress={ () => this._pickImage() }>
-          <Text style={ styles.upload }>
-            Upload
-          </Text>
-        </TouchableOpacity>
+                </View>
+              );
+          }
+        })()}
+        <Image source={{ uri: this.state.uploadURL }} style={styles.image} />
       </View>
-    )
+    );
   }
 }
 
-const styles = StyleSheet.create({
+let styles = RkStyleSheet.create(theme => ({
+  image: {
+    width: "100%",
+    height: "100%"
+  },
+  header: {
+    alignItems: "center"
+  },
+  avatar: {
+    marginRight: 16
+  },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: theme.colors.screen.base
   },
-  image: {
-    height: 200,
-    resizeMode: 'contain',
+  list: {
+    paddingHorizontal: 17
   },
-  upload: {
-    textAlign: 'center',
-    color: '#333333',
+  footer: {
+    flexDirection: "row",
+    minHeight: 60,
     padding: 10,
-    marginBottom: 5,
-    borderWidth: 1,
-    borderColor: 'gray'
+    backgroundColor: theme.colors.screen.alter,
+    bottom: 0
   },
-})
+  item: {
+    marginVertical: 14,
+    flex: 1,
+    flexDirection: "row"
+  },
+  itemIn: {},
+  itemOut: {
+    alignSelf: "flex-end"
+  },
+  time: {
+    alignSelf: "flex-end",
+    margin: 15
+  },
+  plus: {
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    marginRight: 7
+  },
+  send: {
+    width: 40,
+    height: 40,
+    marginLeft: 10
+  },
+  container1: {
+    paddingLeft: 19,
+    paddingRight: 16,
+    paddingVertical: 12,
+    flexDirection: "row",
+    alignItems: "flex-start"
+  },
+  content: {
+    marginLeft: 16,
+    flex: 1
+  },
+  contentHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 6
+  }
+}));
 //make this component available to the app
 export default Demo;
