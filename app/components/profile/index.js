@@ -13,7 +13,6 @@ import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import SliderEntry from "./SliderEntry";
 import { sliderWidth, itemWidth } from "./styles/SliderEntry.style";
 import styles1, { colors } from "./styles/index.style";
-import Interactable from "react-native-interactable";
 import Header from "./Header";
 import Timeline from "./Timeline";
 

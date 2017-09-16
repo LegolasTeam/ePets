@@ -9,6 +9,19 @@ import Feeds from "./components/newfeeds/feeds";
 import Comments from './components/comments'
 import Profile from "./components/profile";
 
+const StackFeeds = StackNavigator({
+  Feeds: {
+    screen: Feeds
+  },
+  Feed: {
+    screen: Feed
+  },
+  Comments: {
+    screen: Comments
+  }
+
+})
+
 const Tabview = TabNavigator(
   {
     Newsfeed: {
@@ -24,21 +37,6 @@ const Tabview = TabNavigator(
   }
 );
 
-const StackFeeds = StackNavigator({
-  Feed: {
-    screen: Feed
-  },
-  Comments: {
-    screen: Comments
-  },
-  Feeds: {
-    screen: Feeds
-  },
-  Profile: {
-    screen: Profile
-  }
-
-})
 
 const StackNav = StackNavigator({
   Login: {

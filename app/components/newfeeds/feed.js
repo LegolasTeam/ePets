@@ -25,7 +25,7 @@ export default class Feed extends React.Component {
     super(props);
     let {params} = this.props.navigation.state;
     let id = params ? params.id : 1;
-    this.data = params.info
+    this.data = params.info || []
   }
 
   render() {
