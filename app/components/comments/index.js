@@ -23,7 +23,7 @@ import {Avatar} from '../avatar';
 // let moment = require('moment');
 import firebase from '../../utils/firebase';
 
-export default class Feeds extends React.Component {
+export default class Feeds extends React.PureComponent {
   static navigationOptions = {
     title: 'Comments'.toUpperCase()
   };
@@ -31,20 +31,12 @@ export default class Feeds extends React.Component {
   constructor(props) {
     super(props);
 
-    let comments = this.props.navigation.state.params.comments;
+    //let comments = this.props.navigation.state.params.comments;
+    this.id  = this.props.navigation.state.params.id;
     this.data = []
-    for(var key in comments){
-      firebase.database().ref('Users').child(comments[key].username).on('value', (d) => {
-        let a = {
-          ava: d.val().profilepic,
-          cmt: comments[key]
-        }
-        this.data.push(a)
-      })
-     
-    }
     this.state = {
-      data: this.data
+      data: this.data,
+      message: ''
     }
     this.renderItem = this._renderItem.bind(this);
   }
@@ -53,8 +45,34 @@ export default class Feeds extends React.Component {
     return Math.random()
   }
 
+  componentDidMount(){
+    let items=[];
+    firebase.database().ref("Users").child(this.id.root).child('posts').child(this.id.id).child('comments').on('child_added',(d)=>{
+        //console.log(d.val())
+        var  note = {
+          key: d.key,
+          val: d.val()
+        }
+        items.push(note);
+    })
+    console.log(items)
+    let temp = [];
+    items.forEach(function(it){
+      firebase.database().ref('Users').child(it.val.username).on('value', (d) => {
+          let a = {
+          ava: d.val().profilepic,
+          cmt: it.val
+        }
+         temp.push(a)
+      })
+    })
+    this.setState({
+      data: temp
+    })
+  }
+
   _renderItem(info) {
-   console.log(info.item.ava)
+   //sconsole.log(info.item.ava)
     return (
         <View style={styles.container1}>
          <TouchableOpacity onPress={() => this.props.navigation.navigate('ProfileV1', {id: info.item.user.id})}>
@@ -71,6 +89,44 @@ export default class Feeds extends React.Component {
         </View>
       </View> 
     )
+  }
+
+  _pushMessage() {
+    Keyboard.dismiss();
+    if (!this.state.message)
+      return;
+    let now = new Date();
+    let msg = {
+      comment: this.state.message,
+      date: now.getTime(),
+      username: 'nayna_cat'
+    };
+    firebase.database().ref("Users").child(this.id.root).child('posts').child(this.id.id).child('comments').push(msg);
+    var items=[];
+    firebase.database().ref("Users").child(this.id.root).child('posts').child(this.id.id).child('comments').on('child_added',(d)=>{
+        //console.log(d.val())
+        var  note = {
+          key: d.key,
+          val: d.val()
+        }
+        items.push(note);
+    })
+    //console.log(items)
+    var temp = [];
+    items.forEach(function(it){
+      firebase.database().ref('Users').child(it.val.username).on('value', (d) => {
+          let a = {
+          ava: d.val().profilepic,
+          cmt: it.val
+        }
+         temp.push(a)
+      })
+    })
+
+    this.setState({
+      data: temp,
+      message: ''
+    });
   }
 
   render() {
@@ -96,10 +152,12 @@ export default class Feeds extends React.Component {
           <RkTextInput
            // onFocus={() => this._scroll(true)}
             //onBlur={() => this._scroll(true)}
-            //onChangeText={(message) => this.setState({message})}
-           // value={this.state.message}
+           onChangeText={(message) => this.setState({message})}
+           //  ref = 'txtInput'
+            value={this.state.message}
             rkType='row sticker'
-            placeholder="Add a comment..."/>
+            placeholder="Add a comment..."
+            />
 
           <RkButton onPress={() => this._pushMessage()} style={styles.send} rkType='circle highlight'>
             <Image source={require('../../assets/icons/sendIcon.png')}/>
