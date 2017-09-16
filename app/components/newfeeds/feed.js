@@ -29,30 +29,32 @@ export default class Feed extends React.Component {
   }
 
   render() {
-    return (
-      <ScrollView style={styles.root}>
-        <RkCard rkType='article'>
-          <Image rkCardImg source={{uri:this.data.item.post.url}}/>
+    return <ScrollView style={styles.root}>
+        <RkCard rkType="article">
+          <Image rkCardImg source={{ uri: this.data.item.post.url }} />
           <View rkCardHeader>
             <View>
-              <RkText style={styles.title} rkType='header4'>{this.data.item.user.name}</RkText>
-              <RkText rkType='secondary2 hintColor'>5 minutes</RkText>
+              <RkText style={styles.title} rkType="header4">
+                {this.data.item.user.name}
+              </RkText>
+              <RkText rkType="secondary2 hintColor">5 minutes</RkText>
             </View>
             <TouchableOpacity onPress={() => {}}>
-              <Avatar rkType='circle' img={this.data.item.user.ava}/>
+              <Avatar rkType="circle" img={this.data.item.user.ava} />
             </TouchableOpacity>
           </View>
           <View rkCardContent>
             <View>
-              <RkText rkType='primary3 bigLine'>{this.data.item.post.caption}</RkText>
+              <RkText rkType="primary3 bigLine">
+                {this.data.item.post.caption}
+              </RkText>
             </View>
           </View>
           <View rkCardFooter>
-            <SocialBar navigation={this.props.navigation} id={{root: this.data.item.root,id : this.data.item.id}}/>
+            <SocialBar navigation={this.props.navigation} id={{ root: this.data.item.root, id: this.data.item.id }} color="black" />
           </View>
         </RkCard>
-      </ScrollView>
-    )
+      </ScrollView>;
   }
 }
 

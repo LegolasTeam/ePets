@@ -8,7 +8,12 @@ import firebase from "../../utils/firebase";
 
 export default class Feeds extends React.Component {
   static navigationOptions = {
-    title: "ePets".toUpperCase()
+    headerTitle: (
+      <Image
+        source={require("../../assets/icons/appIcon.png")}
+        style={{ width: 80, height: 30, marginLeft: 15 }}
+      />
+    )
   };
 
   constructor(props) {
@@ -28,11 +33,9 @@ export default class Feeds extends React.Component {
         var d = [];
         if (data.val() != null) {
           var a = data.val();
-          for (var key in a){
-            if(a[key].posts!==null)
-              var b = a[key].posts;
-            for(var k in b){
-
+          for (var key in a) {
+            if (a[key].posts !== null) var b = a[key].posts;
+            for (var k in b) {
               let post = {
                 id: k,
                 root: key,
@@ -76,10 +79,13 @@ export default class Feeds extends React.Component {
             </RkText>
             <RkText rkType="secondary2 inverseColor">5 minutes</RkText>
             <View rkCardFooter style={styles.footer}>
-
-              <SocialBar rkType='leftAligned' navigation={this.props.navigation} id={{root: info.item.root,id :info.item.id}}/>
-            </View >
-
+              <SocialBar
+                rkType="leftAligned"
+                navigation={this.props.navigation}
+                id={{ root: info.item.root, id: info.item.id }}
+                color="white"
+              />
+            </View>
           </View>
         </RkCard>
       </TouchableOpacity>

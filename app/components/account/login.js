@@ -86,10 +86,7 @@ export default class Login extends Component {
       return (
         <Image
           style={styles.image}
-          source={{
-            uri:
-              "https://i.pinimg.com/originals/a2/35/c2/a235c26c1e076e666262b186a0554a80.png"
-          }}
+          source={require("../../assets/icons/LogoApp.png")}
           style={{ width: 120, height: 120 }}
         />
       );
