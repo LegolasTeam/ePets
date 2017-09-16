@@ -1,7 +1,14 @@
 /* @flow */
 
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Image, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Keyboard,
+  AsyncStorage
+} from "react-native";
 
 import firebase from "../../utils/firebase";
 
@@ -45,7 +52,34 @@ export default class Login extends Component {
     });
   }
 
-  login() {}
+  async login() {
+    // try {
+    //   await AsyncStorage.setItem("username", this.state.Username);
+    // } catch (err) {
+    //   console.log("====================================");
+    //   console.log(err);
+    //   console.log("====================================");
+    // }
+
+    this.props.navigation.navigate("Tabview");
+  }
+
+  componentWillMount() {
+    // this.checkAccount();
+  }
+
+  async checkAccount() {
+    try {
+      var username = await AsyncStorage.getItem("username");
+      if (username) {
+        this.props.navigation.navigate("Tabview");
+      }
+    } catch (error) {
+      console.log("====================================");
+      console.log(error);
+      console.log("====================================");
+    }
+  }
 
   render() {
     let renderIcon = () => {
