@@ -3,14 +3,18 @@ import {
   FlatList,
   Image,
   View,
+  Text,
   TouchableOpacity,
   ActivityIndicator
 } from "react-native";
 import { RkText, RkCard, RkStyleSheet } from "react-native-ui-kitten";
+import {GradientButton} from '../gradientButton';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { SocialBar } from "../socialBar";
+import {Avatar} from '../avatar';
 import firebase from "../../utils/firebase";
 // import {data} from '../../data';
-// let moment = require('moment');
+import moment from 'moment';
 
 export default class Feeds extends React.Component {
   static navigationOptions = {
@@ -73,25 +77,27 @@ export default class Feeds extends React.Component {
         activeOpacity={0.8}
         onPress={() => this.props.navigation.navigate("Feed", { info: info })}
       >
-        <RkCard rkType="backImg">
-          <Image
-            rkCardImg
-            source={{ uri: info.item.post.url }}
-            style={{ resizeMode: "cover" }}
-          />
-          <View rkCardImgOverlay rkCardContent style={styles.overlay}>
-            <RkText rkType="header2 inverseColor">
-              {info.item.user.displayName}
-            </RkText>
-            <RkText rkType="secondary2 inverseColor">5 minutes</RkText>
-            <View rkCardFooter style={styles.footer}>
-              <SocialBar
-                rkType="leftAligned"
-                navigation={this.props.navigation}
-                id={{ root: info.item.root, id: info.item.id }}
-                color="white"
-              />
+        <RkCard style={styles.card}>
+          <Image rkCardImg source={{uri: info.item.post.url}}/>
+          <View rkCardFooter>
+              <View style={styles.userInfo}>
+                <Avatar style={styles.avatar} rkType='circle small' img={info.item.user.ava}/>
+                <RkText rkType='header6'>{info.item.user.displayName}</RkText>
+              </View>
+              <RkText rkType='secondary2 hintColor' style={styles.time}>{moment().add(2, 'seconds').fromNow()}</RkText>
+          </View>
+          <View rkCardContent>
+            <View>
+              <RkText rkType='primary3 mediumLine' numberOfLines={2}>{info.item.post.caption}</RkText>
             </View>
+          </View>
+          <View style={styles.footer} rkCardFooter>
+            <SocialBar
+              rkType="leftAligned"
+              navigation={this.props.navigation}
+              id={{ root: info.item.root, id: info.item.id }}
+              // color="black"
+            />
           </View>
         </RkCard>
       </TouchableOpacity>
@@ -110,12 +116,21 @@ export default class Feeds extends React.Component {
             style={{ marginTop: 200 }}
           />
         ) : (
+        <View style={{flex: 1}}>
           <FlatList
             data={this.state.data}
             renderItem={this.renderItem}
             keyExtractor={this._keyExtractor}
             style={styles.root}
           />
+          <GradientButton
+            rkType="small"
+            onPress={() => this.props.navigation.navigate("Post")}
+            style={styles.button}
+          >
+            <Icon name="md-create" style={styles.buttonIcon}></Icon>
+          </GradientButton>
+        </View>
         )}
       </View>
     );
@@ -123,13 +138,43 @@ export default class Feeds extends React.Component {
 }
 
 let styles = RkStyleSheet.create(theme => ({
+  card: {
+    marginVertical: 8
+  },
   root: {
-    backgroundColor: theme.colors.screen.base
+    backgroundColor: theme.colors.screen.scroll,
+    paddingVertical: 8,
+    paddingHorizontal: 14
   },
   overlay: {
     justifyContent: "flex-end"
   },
   footer: {
     width: 240
-  }
+  },
+  userInfo: {
+    marginLeft: 20,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  avatar: {
+    marginRight: 17
+  },
+  time: {
+    paddingTop: 5,
+    marginRight: 10
+  },
+  button: {
+    width: 45,
+    height: 45,
+    position: "absolute",
+    borderRadius: 50,
+    right: 10,
+    bottom: 10
+  },
+  buttonIcon: {
+      fontSize: 20,
+      height: 22,
+      color: 'white'
+    },
 }));

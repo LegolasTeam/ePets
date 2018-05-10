@@ -121,7 +121,7 @@ let styles = RkStyleSheet.create(theme => ({
   },
   icon: {
     fontSize: 20,
-    color: "white"
+    // color: "white"
   },
   label: {
     marginLeft: 8,

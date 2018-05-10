@@ -19,6 +19,9 @@ const StackFeeds = StackNavigator({
   Feed: {
     screen: Feed
   },
+  Post: {
+    screen: Post
+  },
   Comments: {
     screen: Comments
   }
@@ -44,18 +47,18 @@ const Tabview = TabNavigator(
         tabBarIcon: <Icon name="md-paw" color="gray" size={25} />
       }
     },
+    Map: {
+      screen: Map,
+      navigationOptions: {
+        tabBarIcon: <Icon name="md-pin" color="gray" size={25} />
+      }
+    },
     Profile: {
       screen: stackProfile,
       navigationOptions: {
         tabBarIcon: <Icon name="ios-home" color="gray" size={25} />
       }
     },
-    Map: {
-      screen: Map,
-      navigationOptions: {
-        tabBarIcon: <Icon name="md-pin" color="gray" size={25} />
-      }
-    }
   },
   {
     tabBarOptions: {
