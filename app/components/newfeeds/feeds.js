@@ -8,13 +8,13 @@ import {
   ActivityIndicator
 } from "react-native";
 import { RkText, RkCard, RkStyleSheet } from "react-native-ui-kitten";
-import {GradientButton} from '../gradientButton';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { GradientButton } from "../gradientButton";
+import Icon from "react-native-vector-icons/Ionicons";
 import { SocialBar } from "../socialBar";
-import {Avatar} from '../avatar';
+import { Avatar } from "../avatar";
 import firebase from "../../utils/firebase";
 // import {data} from '../../data';
-import moment from 'moment';
+import moment from "moment";
 
 export default class Feeds extends React.Component {
   static navigationOptions = {
@@ -59,6 +59,8 @@ export default class Feeds extends React.Component {
               d.push(post);
             }
           }
+
+          d.sort((a, b) => b.post.date - a.post.date);
           this.setState({
             data: d
           });
@@ -78,17 +80,27 @@ export default class Feeds extends React.Component {
         onPress={() => this.props.navigation.navigate("Feed", { info: info })}
       >
         <RkCard style={styles.card}>
-          <Image rkCardImg source={{uri: info.item.post.url}}/>
+          <Image rkCardImg source={{ uri: info.item.post.url }} />
           <View rkCardFooter>
-              <View style={styles.userInfo}>
-                <Avatar style={styles.avatar} rkType='circle small' img={info.item.user.ava}/>
-                <RkText rkType='header6'>{info.item.user.displayName}</RkText>
-              </View>
-              <RkText rkType='secondary2 hintColor' style={styles.time}>{moment().add(2, 'seconds').fromNow()}</RkText>
+            <View style={styles.userInfo}>
+              <Avatar
+                style={styles.avatar}
+                rkType="circle small"
+                img={info.item.user.ava}
+              />
+              <RkText rkType="header6">{info.item.user.displayName}</RkText>
+            </View>
+            <RkText rkType="secondary2 hintColor" style={styles.time}>
+              {moment()
+                .add(2, "seconds")
+                .fromNow()}
+            </RkText>
           </View>
           <View rkCardContent>
             <View>
-              <RkText rkType='primary3 mediumLine' numberOfLines={2}>{info.item.post.caption}</RkText>
+              <RkText rkType="primary3 mediumLine" numberOfLines={2}>
+                {info.item.post.caption}
+              </RkText>
             </View>
           </View>
           <View style={styles.footer} rkCardFooter>
@@ -116,21 +128,21 @@ export default class Feeds extends React.Component {
             style={{ marginTop: 200 }}
           />
         ) : (
-        <View style={{flex: 1}}>
-          <FlatList
-            data={this.state.data}
-            renderItem={this.renderItem}
-            keyExtractor={this._keyExtractor}
-            style={styles.root}
-          />
-          <GradientButton
-            rkType="small"
-            onPress={() => this.props.navigation.navigate("Post")}
-            style={styles.button}
-          >
-            <Icon name="md-create" style={styles.buttonIcon}></Icon>
-          </GradientButton>
-        </View>
+          <View style={{ flex: 1 }}>
+            <FlatList
+              data={this.state.data}
+              renderItem={this.renderItem}
+              keyExtractor={this._keyExtractor}
+              style={styles.root}
+            />
+            <GradientButton
+              rkType="small"
+              onPress={() => this.props.navigation.navigate("Post")}
+              style={styles.button}
+            >
+              <Icon name="md-create" style={styles.buttonIcon} />
+            </GradientButton>
+          </View>
         )}
       </View>
     );
@@ -154,8 +166,8 @@ let styles = RkStyleSheet.create(theme => ({
   },
   userInfo: {
     marginLeft: 20,
-    flexDirection: 'row',
-    alignItems: 'center'
+    flexDirection: "row",
+    alignItems: "center"
   },
   avatar: {
     marginRight: 17
@@ -173,8 +185,8 @@ let styles = RkStyleSheet.create(theme => ({
     bottom: 10
   },
   buttonIcon: {
-      fontSize: 20,
-      height: 22,
-      color: 'white'
-    },
+    fontSize: 20,
+    height: 22,
+    color: "white"
+  }
 }));

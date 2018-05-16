@@ -58,7 +58,8 @@ class Demo extends Component {
         caption: this.state.message,
         date: Date.now() / 1000,
         like: 0,
-        url: "https://www.eandl.co.uk/2015/images/pet-banner-dog.jpg"
+        url:
+          "https://statesymbolsusa.org/sites/statesymbolsusa.org/files/primary-images/AlaskanMalamutePupAKdog.jpg"
       });
     this.props.navigation.goBack();
   }
@@ -93,7 +94,8 @@ class Demo extends Component {
                         this.setState(
                           //onBlur={() => this._scroll(true)} // onFocus={() => this._scroll(true)}
                           { message }
-                        )}
+                        )
+                      }
                       value={
                         this.state.message //  ref = 'txtInput'
                       }

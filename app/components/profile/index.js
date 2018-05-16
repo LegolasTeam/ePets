@@ -119,7 +119,7 @@ class Profile extends Component {
     return (
       <View style={[styles1.exampleContainer, { backgroundColor: "white" }]}>
         <Text style={[styles1.title, { fontSize: 30, color: "black" }]}>
-          Billy
+          Rocky
         </Text>
         <Text style={[styles1.subtitle, { fontSize: 25, color: "black" }]}>
           I love my dog

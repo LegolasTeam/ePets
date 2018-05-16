@@ -114,7 +114,7 @@ export default class Feeds extends React.PureComponent {
     let msg = {
       comment: this.state.message,
       date: now.getTime(),
-      username: "billy_parrot"
+      username: "rocky_dog"
     };
     firebase
       .database()
