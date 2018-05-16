@@ -149,7 +149,8 @@ dependencies {
     compile project(':react-native-maps')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
-    compile "com.facebook.react:react-native:+"  // From node_modules
+    // compile ("com.facebook.react:react-native:+")   // From node_modules
+    compile ("com.facebook.react:react-native:0.47.1") { force = true } 
     compile project(':react-native-linear-gradient')
     compile project(path: ':react-native-fetch-blob')
     compile project(path: ':react-native-vector-icons')
