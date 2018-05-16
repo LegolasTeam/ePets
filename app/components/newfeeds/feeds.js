@@ -96,7 +96,7 @@ export default class Feeds extends React.Component {
               rkType="leftAligned"
               navigation={this.props.navigation}
               id={{ root: info.item.root, id: info.item.id }}
-              // color="black"
+              color="black"
             />
           </View>
         </RkCard>

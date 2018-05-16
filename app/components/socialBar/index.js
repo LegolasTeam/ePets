@@ -62,7 +62,11 @@ export class SocialBar extends RkComponent {
         <View style={styles.section}>
           <RkButton rkType="clear" onPress={updateLikes}>
             <RkText rkType="awesome primary" style={styles.icon}>
-              <Icon name="heart" color={color} size={25} />
+              <Icon
+                name="heart"
+                color={this.state.likes === 18 ? "black" : "red"}
+                size={25}
+              />
             </RkText>
             <RkText
               rkType="primary primary4"
@@ -120,7 +124,7 @@ let styles = RkStyleSheet.create(theme => ({
     flex: 1
   },
   icon: {
-    fontSize: 20,
+    fontSize: 20
     // color: "white"
   },
   label: {
