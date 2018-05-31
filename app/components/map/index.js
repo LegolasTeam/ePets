@@ -147,7 +147,7 @@ class Map extends Component {
               longitude: longtitude + 0.0005 || -73.03569
             }}
           >
-            <Icon name="map-marker-alt" size={35} color="#900" />
+            <Icon name="map-marker" size={35} color="#900" />
           </MapView.Marker>
         );
       }
