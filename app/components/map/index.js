@@ -11,6 +11,8 @@ import {
   RkStyleSheet,
   RkTheme
 } from "react-native-ui-kitten";
+import MapViewDirections from 'react-native-maps-directions';
+
 import { SocialBar } from "../socialBar";
 import { Select } from './Select';
 
@@ -37,7 +39,11 @@ class Map extends Component {
     vetMarker,
     eventMarker,
     showPopover: false,
-    popoverAnchor: { x: 0, y: 0, width: 0, height: 0 }
+    popoverAnchor: { x: 0, y: 0, width: 0, height: 0 },
+    initLat: 10.7719343,
+    initLong: 106.6857283,
+    finalLat: 10.7624218,
+    finalLong: 106.6790126,
   };
 
   componentDidMount() {
@@ -52,10 +58,12 @@ class Map extends Component {
       this.onRegionChange(region, region.latitude, region.longitude);
     });
   }
+
   setButton = (event) => {
     const { x, y, width, height } = event.nativeEvent.layout;
     this.setState({ popoverAnchor: { x, y, width, height } });
   }
+
   onRegionChange(region, lastLat, lastLong) {
     this.setState({
       mapRegion: region,
@@ -92,7 +100,7 @@ class Map extends Component {
 
   renderLocationMarker() {
     return this.state.locationMarker.map(
-      ({ latitude, longtitude, title, description }) => {
+      ({ latitude, longitude, title, description }) => {
         return (
           <MapView.Marker
             key={latitude}
@@ -100,7 +108,7 @@ class Map extends Component {
             description={description}
             coordinate={{
               latitude: latitude + 0.0005 || -36.82339,
-              longitude: longtitude + 0.0005 || -73.03569
+              longitude: longitude + 0.0005 || -73.03569
             }}
           >
             <Icon name="map-marker" size={24} color="#900" />
@@ -112,7 +120,7 @@ class Map extends Component {
 
   renderShopMarker() {
     return this.state.shopMarker.map(
-      ({ latitude, longtitude, title, description }) => {
+      ({ latitude, longitude, title, description }) => {
         return (
           <MapView.Marker
             key={latitude}
@@ -120,7 +128,7 @@ class Map extends Component {
             description={description}
             coordinate={{
               latitude: latitude + 0.0005 || -36.82339,
-              longitude: longtitude + 0.0005 || -73.03569
+              longitude: longitude + 0.0005 || -73.03569
             }}
           >
             <Icon name="shopping-bag" size={24} color="#5495ff" />
@@ -132,7 +140,7 @@ class Map extends Component {
 
   renderVetMarker() {
     return this.state.vetMarker.map(
-      ({ latitude, longtitude, title, description }) => {
+      ({ latitude, longitude, title, description }) => {
         return (
           <MapView.Marker
             key={latitude}
@@ -140,7 +148,7 @@ class Map extends Component {
             description={description}
             coordinate={{
               latitude: latitude + 0.0005 || -36.82339,
-              longitude: longtitude + 0.0005 || -73.03569
+              longitude: longitude + 0.0005 || -73.03569
             }}
           >
             <Icon name="plus" size={24} color="red" />
@@ -152,7 +160,7 @@ class Map extends Component {
 
   renderEventMarker() {
     return this.state.eventMarker.map(
-      ({ latitude, longtitude, title, description }) => {
+      ({ latitude, longitude, title, description }) => {
         return (
           <MapView.Marker
             key={latitude}
@@ -160,7 +168,7 @@ class Map extends Component {
             description={description}
             coordinate={{
               latitude: latitude + 0.0005 || -36.82339,
-              longitude: longtitude + 0.0005 || -73.03569
+              longitude: longitude + 0.0005 || -73.03569
             }}
           >
             <Icon name="music" size={24} color="purple" />
@@ -172,7 +180,8 @@ class Map extends Component {
 
 
   render() {
-    const { showVet, showShop, showEvent } = this.state;
+    const { showVet, showShop, showEvent,locationMarker,
+      finalLong, finalLat, initLong, initLat} = this.state;
     return (
     <View style={{ flex: 1 }}>
       <MapView
@@ -184,6 +193,7 @@ class Map extends Component {
         onLongPress={
           this.onMapPress.bind(this) //onPress={this.onMapPress.bind(this)}
         }
+        ref={c => this.mapView = c}
         >
           <MapView.Marker
             title={this.state.title}
@@ -199,6 +209,13 @@ class Map extends Component {
             {showShop && this.renderShopMarker()}
             {showVet && this.renderVetMarker()}
             {showEvent && this.renderEventMarker()}
+            <MapViewDirections
+              origin={{latitude: initLat, longitude: initLong}}
+              destination={{latitude: finalLat, longitude: finalLong}}
+              apikey='AIzaSyCEyYJhtqSBAauv9Y6VukL7t3zodJ0D8sY'
+              strokeWidth={4}
+              strokeColor='#f64e59'
+            />
         </MapView>
           <View style={{ position: "absolute", bottom: 70, right: 10}}
             onLayout={this.setButton}
