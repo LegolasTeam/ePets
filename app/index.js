@@ -39,8 +39,8 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={createStore(appReducer)}>
-        <AppNavigation />
+          <AppNavigation />
       </Provider>
-    );
+     );
   }
 }

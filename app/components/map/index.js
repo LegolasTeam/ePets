@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
-import { View, StyleSheet, Text, Image, Keyboard, Button } from "react-native";
-
+import { findNodeHandle, NativeModules, View, StyleSheet, Text, Image, Keyboard, Button }
+from "react-native";
+import {Popover, PopoverController} from 'react-native-modal-popover';
 import {
   RkButton,
   RkText,
@@ -11,6 +12,7 @@ import {
   RkTheme
 } from "react-native-ui-kitten";
 import { SocialBar } from "../socialBar";
+import { Select } from './Select';
 
 import MapView from "react-native-maps";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -33,7 +35,9 @@ class Map extends Component {
     locationMarker,
     shopMarker,
     vetMarker,
-    eventMarker
+    eventMarker,
+    showPopover: false,
+    popoverAnchor: { x: 0, y: 0, width: 0, height: 0 }
   };
 
   componentDidMount() {
@@ -48,7 +52,10 @@ class Map extends Component {
       this.onRegionChange(region, region.latitude, region.longitude);
     });
   }
-
+  setButton = (event) => {
+    const { x, y, width, height } = event.nativeEvent.layout;
+    this.setState({ popoverAnchor: { x, y, width, height } });
+  }
   onRegionChange(region, lastLat, lastLong) {
     this.setState({
       mapRegion: region,
@@ -163,18 +170,20 @@ class Map extends Component {
     );
   }
 
+
   render() {
+    const { showVet, showShop, showEvent } = this.state;
     return (
-      <View style={{ flex: 1 }}>
-        <MapView
-          style={styles.map}
-          region={this.state.mapRegion}
-          showsUserLocation={true}
-          followUserLocation={true}
-          onRegionChange={this.onRegionChange.bind(this)}
-          onLongPress={
-            this.onMapPress.bind(this) //onPress={this.onMapPress.bind(this)}
-          }
+    <View style={{ flex: 1 }}>
+      <MapView
+        style={styles.map}
+        region={this.state.mapRegion}
+        showsUserLocation={true}
+        followUserLocation={true}
+        onRegionChange={this.onRegionChange.bind(this)}
+        onLongPress={
+          this.onMapPress.bind(this) //onPress={this.onMapPress.bind(this)}
+        }
         >
           <MapView.Marker
             title={this.state.title}
@@ -183,39 +192,76 @@ class Map extends Component {
               latitude: this.state.lastLat + 0.0005 || -36.82339,
               longitude: this.state.lastLong + 0.0005 || -73.03569
             }}
-          >
-            <Icon name="map-marker" size={24} color="green" />
-          </MapView.Marker>
-          {this.renderLocationMarker()}
-          {this.renderShopMarker()}
-          {this.renderVetMarker()}
-          {this.renderEventMarker()}
+            >
+              <Icon name="map-marker" size={24} color="green" />
+            </MapView.Marker>
+            {this.renderLocationMarker()}
+            {showShop && this.renderShopMarker()}
+            {showVet && this.renderVetMarker()}
+            {showEvent && this.renderEventMarker()}
         </MapView>
-        <View style={{ position: "absolute", bottom: 70, right: 10 }}>
-          <RkButton rkType="circle" style={styles1.info}>
-            <Icon name="gear" size={18} color="white" />
-          </RkButton>
-        </View>
-        <View style={styles1.footer}>
-          <RkTextInput
-            onChangeText={message =>
-              this.setState({
-                message
-              })
-            }
-            value={this.state.message}
-            rkType="row sticker"
-            placeholder="Add a description..."
-          />
+          <View style={{ position: "absolute", bottom: 70, right: 10}}
+            onLayout={this.setButton}
+            >
+            <RkButton rkType="circle" style={styles1.info}
+              ref={r => {this.button = r}}
+              onPress={() => this.setState({showPopover: true})}
+              >
+              <Icon name="gear" size={18} color="white" />
+            </RkButton>
+          </View>
+          <View style={styles1.footer}>
+            <RkTextInput
+              onChangeText={message =>
+                this.setState({
+                  message
+                })
+              }
+              value={this.state.message}
+              rkType="row sticker"
+              placeholder="Add a description..."
+            />
 
-          <RkButton
-            onPress={() => this.pushPosition()}
-            style={styles1.send}
-            rkType="circle highlight"
-          >
-            <Image source={require("../../assets/icons/sendIcon.png")} />
-          </RkButton>
-        </View>
+            <RkButton
+              onPress={() => this.pushPosition()}
+              style={styles1.send}
+              rkType="circle highlight"
+              >
+                <Image source={require("../../assets/icons/sendIcon.png")} />
+              </RkButton>
+          </View>
+          <Popover
+            visible={this.state.showPopover}
+            fromRect={this.state.popoverAnchor}
+            onClose={() => this.setState({showPopover: false})}
+            contentStyle={{borderRadius: 5, backgroundColor: 'white'}}
+            // placement="auto"
+            >
+              <View style={styles.row}>
+                <Select color='red' text='VET'
+                  icon={<Icon name='plus' size={20}/> }
+                  selected={showVet} onPress={() => {
+                    this.setState({showVet: !showVet})
+                  }}
+                />
+              </View>
+              <View style={styles.row}>
+                <Select color='purple' text='Event'
+                  icon={<Icon name='music' size={20}/> }
+                  selected={showEvent} onPress={() => {
+                    this.setState({showEvent: !showEvent})
+                  }}
+                />
+              </View>
+              <View style={styles.row}>
+                <Select color='#5495ff' text='Shop'
+                  icon={<Icon name='shopping-bag' size={20}/> }
+                  selected={showShop} onPress={() => {
+                    this.setState({showShop: !showShop})
+                  }}
+                />
+              </View>
+            </Popover>
       </View>
     );
   }
@@ -291,7 +337,15 @@ let styles1 = RkStyleSheet.create(theme => ({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 6
-  }
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 17.5,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: theme.colors.border.base,
+    alignItems: 'center'
+  },
 }));
 
 export default Map;
